@@ -1,0 +1,30 @@
+{
+  "name": "yelp-back",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "local": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.16.0",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.4",
+    "debug": "~2.6.0",
+    "dotenv": "^4.0.0",
+    "ejs": "~2.5.5",
+    "express": "~4.14.1",
+    "express-ejs-layouts": "~2.2.0",
+    "geocoder": "^0.2.3",
+    "googleplaces": "^0.6.1",
+    "localStorage": "^1.0.3",
+    "meetup-api": "^1.4.30",
+    "mongoose": "^4.13.4",
+    "morgan": "~1.7.0",
+    "nodemon": "^1.12.1",
+    "request": "^2.83.0",
+    "seatgeek": "^0.3.8",
+    "serve-favicon": "~2.3.2",
+    "yelp-fusion": "^1.0.4"
+  }
+}
