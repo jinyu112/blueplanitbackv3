@@ -45,6 +45,9 @@ app.use('/', index);
 const apiRouter = require('./routes/api-router');
 app.use('/api', apiRouter);
 
+const emailRouter = require('./routes/email-router');
+app.use('/email', emailRouter);
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
