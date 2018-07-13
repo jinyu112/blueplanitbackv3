@@ -107,10 +107,23 @@ module.exports = {
     },
 
     round2NearestHundredth: function (number) {
-        return Math.round(100*number)/100;
+        return Math.round(100 * number) / 100;
     },
 
     round2NearestTenth: function (number) {
-        return Math.round(10*number)/10;
-    }
+        return Math.round(10 * number) / 10;
+    },
+    findImgInDesc: function (descText) {
+        var m, urls = [];
+        var regex = /<img[^>]+src="?([^"\s]+)"?\s*\/>/g;
+        while (m = regex.exec(descText)) {
+            urls.push(m[1]);
+        }
+        if (urls[0]) {
+            return urls[0];
+        }
+        else {
+            return "";
+        }
+    },
 }

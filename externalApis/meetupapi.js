@@ -198,6 +198,10 @@ module.exports = {
                                 }
                             }
 
+                            if (events.events[i].description && !misc.isEmpty(events.events[i].description)) {
+                                logoUrl = misc.findImgInDesc(events.events[i].description);
+                            }
+
                             rating = misc.round2NearestHundredth(rating);
                             var item = {
                                 name: name,
@@ -253,5 +257,6 @@ module.exports = {
             }
         });
     }
+
 
 }
