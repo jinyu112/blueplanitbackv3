@@ -58,8 +58,26 @@ emailRouter.post('/', (req, res, next) => {
        ]
     };
 
+    var response;
     // send the message and get a callback with an error or details of the message that was sent
-    server.send(message, function(err, message) { console.log(err || message); });
+    let sendEmail = new Promise( function(resolve,reject) {
+        server.send(message, function(err, message) {
+            if(err) {
+                reject('Unable to send email. Please try again.');
+            } else {
+                resolve(message);
+            }
+        });
+    });
+
+    sendEmail.then( (success) => {
+        res.send(success);
+    })
+    .catch((error) => {
+        res.send(error);
+    });
+
+
 
 });
 
