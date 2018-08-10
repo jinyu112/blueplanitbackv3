@@ -1,4 +1,4 @@
-
+const CONSTANTS = require('../constants_back.js');
 var seatgeek = require("../seatgeek/seatgeek");
 const MISC = require('../miscfuncs/misc.js');
 const CLIENT_ID = process.env.SEATGEEK_ID;
@@ -17,7 +17,7 @@ const MAX_DESCRIPTION_LENGTH = 1000;
 // currently no api rate limit -> https://github.com/seatgeek/api-support/issues/50
 
 module.exports = {
-    getSeatGeekData: function (city_in, date_in) {
+    getSeatGeekData: function (city_in, date_in, search_radius_miles) {
         return new Promise(function (resolve, reject) {
             try {
                 var seatgeekFee;
@@ -38,6 +38,9 @@ module.exports = {
                 var today = MISC.getDate(date_in, -1);
                 // console.log("sg location: " + city_in)
 
+                // search radius in miles
+                var search_radius = search_radius_miles; 
+
                 //Do the seatgeek API call using seatgeek.js
                 seatgeek.events({
                     'datetime_local.gte': today,    //gte = greater than or equal to
@@ -46,6 +49,7 @@ module.exports = {
                     client_id: CLIENT_ID,
                     client_secret: CLIENT_KEY,
                     aid: SG_AID,
+                    range: search_radius+'mi', //miles
                 }, function (error, events) {
                     if (error) {
                         console.log(error);
@@ -53,7 +57,7 @@ module.exports = {
                     }
                     else {
                         // Check if events != null (events is returned by the API call)
-                        if (events && events !== null) {
+                        if (events && events !== null && events !== undefined && !MISC.isEmpty(events)) {
                             var numOfEvents = events.events.length;
                             var eventCnt = 0;
 
@@ -195,7 +199,8 @@ module.exports = {
                                         phone: phone,
                                         address: address,
                                         other: [sgScore,lowestPrice,highestPrice],
-                                        origin: 'seatgeek'
+                                        origin: 'seatgeek',
+                                        dist_within: search_radius, // integer in miles
                                     }
 
                                     if (events.events[i].datetime_local) {

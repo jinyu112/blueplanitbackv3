@@ -1,10 +1,11 @@
-const MISC = require('../miscfuncs/misc.js');
+const misc = require('../miscfuncs/misc.js');
+const CONSTANTS = require('../constants_back.js');
 const MAX_DEFAULT_EVENT_DURATION = 1.5; //hours
 //  current rate limit is 25000 per day
 module.exports = {
 
     // Get data from Yelp and format it
-    getYelpData: function (term_in, location_in, client, date, string_date, hours_offset) {
+    getYelpData: function (term_in, location_in, client, date, string_date, hours_offset, search_radius_miles) {
         return new Promise(function (resolve, reject) {
             const HOURS_TO_SECONDS = 3600;
 
@@ -14,7 +15,18 @@ module.exports = {
             // console.log("term_in: " + term_in)
             // console.log("location_in: " + location_in)
             // console.log("date_substring: " + date_substring)
+            
             var businesses = [];
+
+            // search radius in miles
+            var search_radius = Math.round(search_radius_miles*CONSTANTS.MILES_TO_METERS); // max is 40000 m (about 25 miles per yelp api doc) 
+
+            if (search_radius > CONSTANTS.MAX_YELP_SEARCH_RADIUS) {
+                search_radius = CONSTANTS.MAX_YELP_SEARCH_RADIUS; //currently about 25 mi
+            }
+            if (search_radius < 2*CONSTANTS.MILES_TO_METERS) {
+                search_radius = 2*CONSTANTS.MILES_TO_METERS; 
+            }
 
                 client.search({
                     term: term_in,
@@ -22,10 +34,11 @@ module.exports = {
                     location: location_in,
                     limit: 50,
                     offset: 0,
+                    radius: search_radius, // integer
                 }).then(response => {
 
                     if (response.error) {
-                        console.log(response.error);
+                        //console.log(response.error);
                         reject(false);
                     }
                     else {
@@ -144,16 +157,16 @@ module.exports = {
                             duration: duration,
                             defaultDuration: defaultDuration,
                             approximateFee: approximateFee,
-                            origin: 'yelp'
+                            origin: 'yelp',
+                            dist_within: search_radius_miles, // integer in miles
                         }
                         businesses.push(item);
                     });
 
                     resolve(businesses);
                 }
-
                 }).catch(e => {
-                    console.log(e);
+                    //console.log(e);
                     reject(false);
                 });
         });

@@ -1,9 +1,10 @@
-// Currently only returns 20 results max, and only searches for parks within a 50 mile radius
+// Currently only returns 20 results max, and only searches for parks within a x mile radius
 // Only searching parks because it is difficult to price the other returned places because there
 // is no pricing data
 
 
 const misc = require('../miscfuncs/misc.js');
+const CONSTANTS = require('../constants_back.js');
 var GooglePlaces = require('googleplaces');
 const GOOGLE_PLACES_OUTPUT_FORMAT = "json"
 var googlePlaces = new GooglePlaces(process.env.GOOGLE_API_KEY, GOOGLE_PLACES_OUTPUT_FORMAT);
@@ -17,7 +18,7 @@ const EVENT3_TIME = 1800;
 const EVENT4_TIME = 2400;
 
 module.exports = {
-    getGooglePlacesData: function (location_in) {
+    getGooglePlacesData: function (location_in, search_radius_miles) {
         return new Promise(function (resolve, reject) {
             try {
                 //console.log(location_in)
@@ -28,10 +29,12 @@ module.exports = {
                     Event4: []
                 };
 
+                var search_radius = search_radius_miles; 
+
                 var parameters = {
                     location: location_in,
                     type: "park",
-                    radius: RADIUS,
+                    radius: search_radius*CONSTANTS.MILES_TO_METERS,
                 };
                 googlePlaces.placeSearch(parameters, function (error, response) {
                     if (error) {
@@ -131,7 +134,8 @@ module.exports = {
                                 phone: phone,
                                 address: address,
                                 other: rating,
-                                origin: 'places'
+                                origin: 'places',
+                                dist_within: search_radius, // integer
                             }
 
                             if (time && rating > 4.0) {

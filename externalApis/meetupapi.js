@@ -1,5 +1,5 @@
 const misc = require('../miscfuncs/misc.js');
-
+const CONSTANTS = require('../constants_back.js');
 const meetup = require('../node_modules/meetup-api/lib/meetup')({
     key: process.env.MEETUP_KEY
 });
@@ -19,7 +19,7 @@ const MAX_DESCRIPTION_LENGTH = 1000;
 module.exports = {
     // ------------- Meetup API Stuff
     // Get  data from Meetup
-    getMeetupData: function (location_in, date_in) {
+    getMeetupData: function (location_in, date_in, search_radius_miles) {
         //Meetup
         return new Promise(function (resolve, reject) {
             try {
@@ -38,11 +38,18 @@ module.exports = {
                 var today = misc.getDate(date_in, -1);
                 var meetupFee;
 
+                // search radius in miles
+                var search_radius = search_radius_miles; 
+
+                if (search_radius > CONSTANTS.DEFAULT_SEARCH_RADIUS_MI) {
+                    search_radius = CONSTANTS.DEFAULT_SEARCH_RADIUS_MI; 
+                }
+
                 // API call
                 meetup.getUpcomingEvents({
                     lat: latLongArray[0],
                     lon: latLongArray[1],
-                    radius: 'smart',
+                    radius: search_radius,
                     order: 'time',
                     end_date_range: dateEnd,
                     start_date_range: today, // default start date and time is the current date and time
@@ -217,7 +224,8 @@ module.exports = {
                                 defaultDuration: defaultDuration,
                                 approximateFee: approximateFee,
                                 other:[rsvpCnt,waitlistCnt],
-                                origin: 'meetup'
+                                origin: 'meetup',
+                                dist_within: search_radius, // integer in miles
                             }
 
                             if (events.events[i].local_time || events.events[i].time) {

@@ -1,6 +1,7 @@
 const token = process.env.EVENTBRITE_TOKEN;
 const misc = require('../miscfuncs/misc.js');
 const request = require('request');
+const CONSTANTS = require('../constants_back.js');
 const EBRATING_BASE = 10.5; // Base rating for a meetup event
 const RATING_INCR = 0.0;
 const EVENT1_TIME = 900;
@@ -15,8 +16,9 @@ const DURATION_BIAS = 0.0;
 // current api rate limit: 2000 calls/hr and 48000 calls/day
 // https://www.eventbrite.com/developer/v3/endpoints/events/
 // https://www.eventbrite.com/developer/v3/api_overview/errors/
+// eventbrite api does not provide lat long info for the event unless the event venue is queried separately
 module.exports = {
-    getEventbriteData: function (term_query, latlon, city, date_in) {
+    getEventbriteData: function (term_query, latlon, city, date_in, search_radius_miles) {
         return new Promise(function (resolve, reject) {
             // ACCESS EVENTBRITE API
 
@@ -30,6 +32,11 @@ module.exports = {
             var today = misc.getDate(date_in, -1);
             var dateEnd = misc.getDate(date_in, 0);
 
+            if (search_radius_miles<1) {
+                search_radius_miles = 1;
+            }
+            var search_radius = search_radius_miles + 'mi'; //needs to be astring
+
             var options = {
                 url: base_url + 'events/search',
                 headers: {
@@ -42,6 +49,7 @@ module.exports = {
                     'start_date.range_start': today,
                     'start_date.range_end': dateEnd,
                     'price': 'free',
+                    'location.within': search_radius,
                 }
                 // qs: {'q': term_query, 'location.city': city }
             };
@@ -63,6 +71,7 @@ module.exports = {
                     //console.log(events)
                     if (events.events.length > 0) {
                         events.events.forEach(function (event, index, array) {
+
                             var cost = 0;
                             var rating = 0;
                             var url = '';
@@ -77,7 +86,6 @@ module.exports = {
                             var address='';
                             var description = '';
                             var time = event.start.local;
-
                             if (time) {
                                 time = misc.processTimeSG(time);
                             } else {
@@ -154,6 +162,7 @@ module.exports = {
                                     lat: latitude,
                                     lng: longitude
                                 };
+                                // distance = getDistanceFromLatLonInMi(latitude,longitude,)
                                 rating = rating + RATING_INCR;
                             }
 
@@ -175,7 +184,8 @@ module.exports = {
                                 phone: phone,
                                 address: address,
                                 other: [],
-                                origin: 'eventbrite'
+                                origin: 'eventbrite',
+                                dist_within: search_radius_miles, // integer
                             };
 
                             if (event.start) {
