@@ -1,7 +1,7 @@
 module.exports = {
     DEFAULT_SEARCH_RADIUS_MI: 50,
     MILES_TO_METERS: 1609.34, // 1 mile = 1609.34 meters
-    MILES_TO_METERSMAX_YELP_SEARCH_RADIUS: 40000,
+    MAX_YELP_SEARCH_RADIUS: 40000,
     NONE_ITEM_EVENT: {
         name: "None/Free Itinerary Slot",
         cost: 0,

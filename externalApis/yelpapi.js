@@ -38,7 +38,7 @@ module.exports = {
                 }).then(response => {
 
                     if (response.error) {
-                        //console.log(response.error);
+                        console.log(response.error);
                         reject(false);
                     }
                     else {
@@ -166,7 +166,7 @@ module.exports = {
                     resolve(businesses);
                 }
                 }).catch(e => {
-                    //console.log(e);
+                    console.log(e);
                     reject(false);
                 });
         });

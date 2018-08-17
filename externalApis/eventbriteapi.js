@@ -48,7 +48,7 @@ module.exports = {
                     'location.longitude': longitude,
                     'start_date.range_start': today,
                     'start_date.range_end': dateEnd,
-                    'price': 'free',
+                    //'price': 'free',
                     'location.within': search_radius,
                 }
                 // qs: {'q': term_query, 'location.city': city }
