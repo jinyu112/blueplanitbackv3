@@ -48,7 +48,7 @@ module.exports = {
                     'location.longitude': longitude,
                     'start_date.range_start': today,
                     'start_date.range_end': dateEnd,
-                    //'price': 'free',
+                    //'price': 'free', // only return free events because non free events don't return a cost
                     'location.within': search_radius,
                 }
                 // qs: {'q': term_query, 'location.city': city }
@@ -81,7 +81,7 @@ module.exports = {
                             var eventLocation = '';
                             var duration=MAX_DEFAULT_EVENT_DURATION;
                             var defaultDuration; // the default event duration is returned (ie api call didn't provide event duration data)
-                            var approximateFee = true; // always true because eventbrite search currently ONLY returns free events
+                            var approximateFee = false; // always true because eventbrite search currently ONLY returns free events
                             var phone='';
                             var address='';
                             var description = '';
@@ -94,7 +94,8 @@ module.exports = {
 
                             var timeFloat = parseFloat(time);
                             if (event.is_free == false) {
-                                cost = 10;
+                                cost = CONSTANTS.NOCOST_EVENT_COST;
+                                approximateFee = true;
                             } else {
                                 cost = 0;
                             }

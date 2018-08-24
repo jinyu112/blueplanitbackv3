@@ -77,6 +77,7 @@ module.exports = {
                                 var phone='';
                                 var address='';
                                 var sgScore = 0.0;
+                                var approximateFee = false;
                                 defaultDuration = true;
 
                                 // Address
@@ -198,8 +199,10 @@ module.exports = {
                                         defaultDuration: defaultDuration,
                                         phone: phone,
                                         address: address,
+                                        approximateFee: approximateFee,
                                         other: [sgScore,lowestPrice,highestPrice],
                                         origin: 'seatgeek',
+                                        
                                         dist_within: search_radius, // integer in miles
                                     }
 

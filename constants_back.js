@@ -21,4 +21,5 @@ module.exports = {
         origin: 'noneitem',
         other: 0,
       },
+      NOCOST_EVENT_COST: 20, //set a $20 cost for events that don't have costs associated with them
 }
