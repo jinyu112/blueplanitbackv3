@@ -116,13 +116,13 @@ module.exports = {
                             if (event.description) {
                                 if (event.description.text && event.description.text !== '') {
                                     if (event.description.text.length > 0) {
-                                        if (event.description.text.length>MAX_DESCRIPTION_LENGTH) {
-                                            description = event.description.text.substring(0,MAX_DESCRIPTION_LENGTH-1);
-                                            description += "...";
-                                        }
-                                        else {
+                                        // if (event.description.text.length>MAX_DESCRIPTION_LENGTH) {
+                                        //     description = event.description.text.substring(0,MAX_DESCRIPTION_LENGTH-1);
+                                        //     description += "...";
+                                        // }
+                                        // else {
                                             description = event.description.text;
-                                        }
+                                        // }
                                     }
                                 }
                             }
