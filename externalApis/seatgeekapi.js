@@ -3,7 +3,7 @@ var seatgeek = require("../seatgeek/seatgeek");
 const MISC = require('../miscfuncs/misc.js');
 const CLIENT_ID = process.env.SEATGEEK_ID;
 const CLIENT_KEY = process.env.SEATGEEK_KEY;
-const SG_AID = process.env.SEATGEEK_AFFLIATE_ID;
+const SG_AID = process.env.SEATGEEK_ID;
 const SGRATING_FACT = 1 *0/ 100; // The bigger this is, the more the price of the event increases the rating
 const SGRATING_BASE = 10.5; // Base rating for a seatgeek event
 const RATING_INCR = 0.0;
@@ -14,6 +14,7 @@ const EVENT4_TIME = 2400;
 const MAX_DEFAULT_EVENT_DURATION = 3.0; //hours
 const MAX_DESCRIPTION_LENGTH = 1000;
 
+//SEATGEEK PROVIDES ADDRESS FOR ALL EVENTS
 // currently no api rate limit -> https://github.com/seatgeek/api-support/issues/50
 
 module.exports = {
@@ -37,9 +38,9 @@ module.exports = {
                 // The returned date is jan 11, 2018, 2 am.
                 var today = MISC.getDate(date_in, -1);
                 // console.log("sg location: " + city_in)
-
+var count = 1
                 // search radius in miles
-                var search_radius = search_radius_miles; 
+                var search_radius = search_radius_miles;
 
                 //Do the seatgeek API call using seatgeek.js
                 seatgeek.events({
@@ -56,11 +57,15 @@ module.exports = {
                         reject(false);
                     }
                     else {
+
                         // Check if events != null (events is returned by the API call)
                         if (events && events !== null && events !== undefined && !MISC.isEmpty(events)) {
                             var numOfEvents = events.events.length;
                             var eventCnt = 0;
-
+if(count == 1) {
+    console.log(events.events);
+    count = 2;
+}
                             for (var i = 0; i < numOfEvents; i++) {
                                 var cost = 0;
                                 var rating = 0;
@@ -84,7 +89,7 @@ module.exports = {
                                 if (events.events[i].venue.address) {
                                     address = events.events[i].venue.address + ", " +
                                     events.events[i].venue.city + ", " +
-                                    events.events[i].venue.state + ", " + 
+                                    events.events[i].venue.state + ", " +
                                     events.events[i].venue.postal_code;
                                 }
 
@@ -202,7 +207,7 @@ module.exports = {
                                         approximateFee: approximateFee,
                                         other: [sgScore,lowestPrice,highestPrice],
                                         origin: 'seatgeek',
-                                        
+
                                         dist_within: search_radius, // integer in miles
                                     }
 

@@ -39,7 +39,7 @@
       http = require('https'); // node js module
                                // Initially when this seatgeek module was installed by using npm
                                // install seatgeak, the line read "require('http'). The module was
-                               // old and this line caused an error when making a request. 
+                               // old and this line caused an error when making a request.
                                // The seatgeek api documentation required https and so this was
                                // changed to accommodate the api doc. -JG
     }
@@ -50,7 +50,7 @@
       script.src = url;
       return document.body.appendChild(script);
     } else {
-      
+
       req = http.get(url, function(res) {
         var body;
         body = '';
@@ -84,6 +84,7 @@
     if (query_string.length) {
       endpoint += '?' + query_string.join('&');
     }
+    console.log(endpoint);
     return endpoint;
   };
 
