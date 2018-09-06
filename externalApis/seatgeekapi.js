@@ -18,11 +18,11 @@ const MAX_DESCRIPTION_LENGTH = 1000;
 // currently no api rate limit -> https://github.com/seatgeek/api-support/issues/50
 
 module.exports = {
-    getSeatGeekData: function (city_in, date_in, search_radius_miles) {
+    getSeatGeekData: function (city_in, date_in, search_radius_miles, latlon_in) {
         return new Promise(function (resolve, reject) {
             try {
                 var seatgeekFee;
-
+                var latLongArray = MISC.processLocationString(latlon_in);
                 // Initialize the object that will hold the seatgeek event data categorized by time
                 var seatgeekEvents = {
                     Event1: [],
@@ -38,7 +38,7 @@ module.exports = {
                 // The returned date is jan 11, 2018, 2 am.
                 var today = MISC.getDate(date_in, -1);
                 // console.log("sg location: " + city_in)
-var count = 1
+
                 // search radius in miles
                 var search_radius = search_radius_miles;
 
@@ -46,7 +46,8 @@ var count = 1
                 seatgeek.events({
                     'datetime_local.gte': today,    //gte = greater than or equal to
                     'datetime_local.lte': dateEnd,  //lte = less than or equal to
-                    'venue.city': city_in,
+                    'lat': latLongArray[0],
+                    'lon': latLongArray[1],
                     client_id: CLIENT_ID,
                     client_secret: CLIENT_KEY,
                     aid: SG_AID,
@@ -62,10 +63,7 @@ var count = 1
                         if (events && events !== null && events !== undefined && !MISC.isEmpty(events)) {
                             var numOfEvents = events.events.length;
                             var eventCnt = 0;
-if(count == 1) {
-    console.log(events.events);
-    count = 2;
-}
+
                             for (var i = 0; i < numOfEvents; i++) {
                                 var cost = 0;
                                 var rating = 0;

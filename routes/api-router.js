@@ -138,7 +138,7 @@ apiRouter.post('/', (req, res, next) => {
 
             if (doSeatgeekCalls) {
                 // Fulfilled promise returned from getSeatGeekData is an array of object arrays
-                return seatgeekApi.getSeatGeekData(req.body.city, date, req.body.search_radius_miles);
+                return seatgeekApi.getSeatGeekData(req.body.city, date, req.body.search_radius_miles,req.body.latlon);
             }
             else {
                 var seatgeekEvents = EMPTY_EVENT_ARRAY;
