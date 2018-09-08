@@ -127,6 +127,19 @@ module.exports = {
                                     lat: business.coordinates.latitude,
                                     lng: business.coordinates.longitude
                                 }
+
+                                var latLongArray = misc.processLocationString(location_in);
+                                var lat_input = parseFloat(latLongArray[0]);
+                                var long_input = parseFloat(latLongArray[1]);
+                                distance_from_input_location = misc.getDistanceFromLatLonInMi(lat_input, long_input,
+                                    businessLocation.lat, businessLocation.lng); //output is in mi
+                                // do some limit checks
+                                if (distance_from_input_location >= parseFloat(search_radius)) {
+                                    distance_from_input_location = parseFloat(search_radius);
+                                }
+                                else if (distance_from_input_location < 0) {
+                                    distance_from_input_location = 0;
+                                } 
                             } else if (business.location.address1 &&
                                 business.location.city &&
                                 business.location.state &&
@@ -135,8 +148,10 @@ module.exports = {
                                     business.location.city + "," +
                                     business.location.state + "," +
                                     business.location.zip_code;
+                                    distance_from_input_location = 0;
                             } else {
-                                businessLocation = location_in
+                                businessLocation = location_in;
+                                distance_from_input_location = 0;
                             }
 
                         }
@@ -159,6 +174,7 @@ module.exports = {
                             approximateFee: approximateFee,
                             origin: 'yelp',
                             dist_within: search_radius_miles, // integer in miles
+                            distance_from_input_location: distance_from_input_location,
                         }
                         businesses.push(item);
                     });

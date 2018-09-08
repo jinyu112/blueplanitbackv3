@@ -187,6 +187,7 @@ module.exports = {
                                 other: [],
                                 origin: 'eventbrite',
                                 dist_within: search_radius_miles, // integer
+                                distance_from_input_location: 0,
                             };
 
                             if (event.start) {

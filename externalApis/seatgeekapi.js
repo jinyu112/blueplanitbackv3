@@ -14,7 +14,7 @@ const EVENT4_TIME = 2400;
 const MAX_DEFAULT_EVENT_DURATION = 3.0; //hours
 const MAX_DESCRIPTION_LENGTH = 1000;
 
-//SEATGEEK PROVIDES ADDRESS FOR ALL EVENTS
+//SEATGEEK PROVIDES lat long but potentially not for all events
 // currently no api rate limit -> https://github.com/seatgeek/api-support/issues/50
 
 module.exports = {
@@ -163,6 +163,18 @@ module.exports = {
                                                     lat: events.events[i].venue.location.lat,
                                                     lng: events.events[i].venue.location.lon
                                                 }
+
+                                                var lat_input = parseFloat(latLongArray[0]);
+                                                var long_input = parseFloat(latLongArray[1]);
+                                                distance_from_input_location = MISC.getDistanceFromLatLonInMi(lat_input, long_input,
+                                                    eventLocation.lat, eventLocation.lng); //output is in mi
+                                                // do some limit checks
+                                                if (distance_from_input_location >= parseFloat(search_radius)) {
+                                                    distance_from_input_location = parseFloat(search_radius);
+                                                }
+                                                else if (distance_from_input_location < 0) {
+                                                    distance_from_input_location = 0;
+                                                } 
                                                 rating = rating + RATING_INCR;
                                             }
                                         } else if (events.events[i].venue.address &&
@@ -173,9 +185,11 @@ module.exports = {
                                                 events.events[i].venue.city + "," +
                                                 events.events[i].venue.state + "," +
                                                 events.events[i].venue.postal_code;
+                                                distance_from_input_location = 0;
                                             rating = rating + RATING_INCR;
                                         } else {
                                             eventLocation = city_in;
+                                            distance_from_input_location = 0;
                                         }
 
                                     }
@@ -205,8 +219,8 @@ module.exports = {
                                         approximateFee: approximateFee,
                                         other: [sgScore,lowestPrice,highestPrice],
                                         origin: 'seatgeek',
-
                                         dist_within: search_radius, // integer in miles
+                                        distance_from_input_location:distance_from_input_location,
                                     }
 
                                     if (events.events[i].datetime_local) {

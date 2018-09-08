@@ -16,6 +16,8 @@ const MILLISEC_TO_HOURS = 1/1000/60/60;
 const MAX_DESCRIPTION_LENGTH = 1000;
 // current api rate limit is 30 calls per 10 seconds
 // https://www.meetup.com/meetup_api/docs/
+
+// meetup has lat long location info for each event
 module.exports = {
     // ------------- Meetup API Stuff
     // Get  data from Meetup
@@ -185,13 +187,27 @@ module.exports = {
                                         lat: events.events[i].venue.lat,
                                         lng: events.events[i].venue.lon
                                     }
+
+                                    var lat_input = parseFloat(latLongArray[0]);
+                                    var long_input = parseFloat(latLongArray[1]);
+                                    distance_from_input_location = misc.getDistanceFromLatLonInMi(lat_input,long_input,
+                                        eventLocation.lat,eventLocation.lng); //output is in mi
+                                    // do some limit checks
+                                    if (distance_from_input_location >= parseFloat(search_radius)) {
+                                        distance_from_input_location = parseFloat(search_radius);
+                                    }
+                                    else if (distance_from_input_location < 0) {
+                                        distance_from_input_location = 0;
+                                    } 
                                 } else if (events.events[i].venue.address_1 && events.events[i].venue.city &&
                                 events.events[i].venue.state && events.events[i].venue.zip) {
                                     eventLocation = events.events[i].venue.address_1 + "," +
                                     events.events[i].venue.city + "," +
                                     events.events[i].venue.state + "," +
                                     events.events[i].venue.zip;
+                                    distance_from_input_location = 0;
                                 }
+                                
                                 rating =rating + RATING_INCR;
                             }
                             else if (events.events[i].group) {
@@ -201,9 +217,21 @@ module.exports = {
                                         lat: events.events[i].group.lat,
                                         lng: events.events[i].group.lon
                                     }
+                                    var lat_input = parseFloat(latLongArray[0]);
+                                    var long_input = parseFloat(latLongArray[1]);
+                                    distance_from_input_location = misc.getDistanceFromLatLonInMi(lat_input,long_input,
+                                        eventLocation.lat,eventLocation.lng); //output is in mi
+                                    // do some limit checks
+                                    if (distance_from_input_location >= parseFloat(search_radius)) {
+                                        distance_from_input_location = parseFloat(search_radius);
+                                    }
+                                    else if (distance_from_input_location < 0) {
+                                        distance_from_input_location = 0;
+                                    } 
                                     rating = rating + RATING_INCR/2.0;
                                 }
                             }
+                            else distance_from_input_location = 0;
 
                             if (events.events[i].description && !misc.isEmpty(events.events[i].description)) {
                                 logoUrl = misc.findImgInDesc(events.events[i].description);
@@ -226,6 +254,7 @@ module.exports = {
                                 other:[rsvpCnt,waitlistCnt],
                                 origin: 'meetup',
                                 dist_within: search_radius, // integer in miles
+                                distance_from_input_location: distance_from_input_location,
                             }
 
                             if (events.events[i].local_time || events.events[i].time) {

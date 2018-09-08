@@ -16,7 +16,7 @@ const EVENT1_TIME = 900;
 const EVENT2_TIME = 1200;
 const EVENT3_TIME = 1800;
 const EVENT4_TIME = 2400;
-
+// google places has lat long location info for each event
 module.exports = {
     getGooglePlacesData: function (location_in, search_radius_miles) {
         return new Promise(function (resolve, reject) {
@@ -82,8 +82,23 @@ module.exports = {
                                         lat: response.results[i].geometry.location.lat,
                                         lng: response.results[i].geometry.location.lng
                                     }
+
+                                    var latLongArray = misc.processLocationString(location_in);
+                                    var lat_input = parseFloat(latLongArray[0]);
+                                    var long_input = parseFloat(latLongArray[1]);
+                                    distance_from_input_location = misc.getDistanceFromLatLonInMi(lat_input,long_input,
+                                        placeLocation.lat,placeLocation.lng); //output is in mi
+                                    // do some limit checks
+                                    if (distance_from_input_location >= parseFloat(search_radius)) {
+                                        distance_from_input_location = parseFloat(search_radius);
+                                    }
+                                    else if (distance_from_input_location < 0) {
+                                        distance_from_input_location = 0;
+                                    } 
                                 }
                             }
+                            else distance_from_input_location = 0;
+
                             if (response.results[i].vicinity) {
                                 vicinity=response.results[i].vicinity;
                             }
@@ -136,6 +151,7 @@ module.exports = {
                                 other: rating,
                                 origin: 'places',
                                 dist_within: search_radius, // integer
+                                distance_from_input_location: distance_from_input_location,
                             }
 
                             if (time && rating > 4.0) {
