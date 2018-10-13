@@ -17,6 +17,32 @@ const EVENT2_TIME = 1200;
 const EVENT3_TIME = 1800;
 const EVENT4_TIME = 2400;
 // google places has lat long location info for each event
+// https://developers.google.com/places/web-service/usage-and-billing
+// Example
+// You make a Nearby Search request, for example: NearbySearch(San Francisco, 100 meters). On your bill, you will see the following SKUs listed (when viewing your bill by SKU):
+
+// Places - Nearby Search (price starting at 0.032 USD per call)
+// Basic Data (billed at 0.00 USD)
+// Contact Data (price starting at 0.003 USD per request)
+// Atmosphere Data (price starting at 0.005 USD per request)
+
+//https://developers.google.com/places/supported_types
+// applicable types for searching:
+// amusement_park
+// aquarium
+// art_gallery
+// bar
+// bowling_alley
+// campground
+// movie_theater
+// museum
+// night_club
+// park
+// shopping_mall
+// spa
+// zoo
+// can only search for one typ at a time
+
 module.exports = {
     getGooglePlacesData: function (location_in, search_radius_miles) {
         return new Promise(function (resolve, reject) {
@@ -33,7 +59,7 @@ module.exports = {
 
                 var parameters = {
                     location: location_in,
-                    type: "park",
+                    //type: "amusement_park",
                     radius: search_radius*CONSTANTS.MILES_TO_METERS,
                 };
                 googlePlaces.placeSearch(parameters, function (error, response) {

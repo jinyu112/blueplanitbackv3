@@ -84,7 +84,7 @@
     if (query_string.length) {
       endpoint += '?' + query_string.join('&');
     }
-    console.log(endpoint);
+    //console.log(endpoint);
     return endpoint;
   };
 

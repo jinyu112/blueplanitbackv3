@@ -17,6 +17,21 @@ const DURATION_BIAS = 0.0;
 // https://www.eventbrite.com/developer/v3/endpoints/events/
 // https://www.eventbrite.com/developer/v3/api_overview/errors/
 // eventbrite api does not provide lat long info for the event unless the event venue is queried separately
+// category ids:
+// 113 - Interest Groups
+// 101 - Business / Seminar
+// 103 - Party 
+// 104 - Networking / Premier
+// 105 - Talks / Poetry?
+// 106 - Fashion Show 
+// 107 - Workshops
+// 108 - Sport 
+// 109 - Tour 
+// 110 - Dance
+// 111 - Charity
+// 112 - Politics
+// 114 - Tours? 
+// 199 - Training
 module.exports = {
     getEventbriteData: function (term_query, latlon, city, date_in, search_radius_miles) {
         return new Promise(function (resolve, reject) {
@@ -44,6 +59,7 @@ module.exports = {
                 },
                 qs: {
                     // 'q': term_query,
+                    //'categories': '101', //comma delimited string of category IDs
                     'location.latitude': latitude,
                     'location.longitude': longitude,
                     'start_date.range_start': today,

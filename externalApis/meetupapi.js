@@ -53,6 +53,7 @@ module.exports = {
                     lon: latLongArray[1],
                     radius: search_radius,
                     order: 'time',
+                    //text: 'outdoor', //empty returns all events or you can specify a string (ie art, park, sport)
                     end_date_range: dateEnd,
                     start_date_range: today, // default start date and time is the current date and time
                     page: 100,

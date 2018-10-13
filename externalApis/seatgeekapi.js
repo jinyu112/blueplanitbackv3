@@ -16,6 +16,7 @@ const MAX_DESCRIPTION_LENGTH = 1000;
 
 //SEATGEEK PROVIDES lat long but potentially not for all events
 // currently no api rate limit -> https://github.com/seatgeek/api-support/issues/50
+// https://platform.seatgeek.com/
 
 module.exports = {
     getSeatGeekData: function (city_in, date_in, search_radius_miles, latlon_in) {

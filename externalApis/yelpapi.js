@@ -1,7 +1,12 @@
 const misc = require('../miscfuncs/misc.js');
 const CONSTANTS = require('../constants_back.js');
 const MAX_DEFAULT_EVENT_DURATION = 1.5; //hours
+// https://www.yelp.com/developers/documentation/v3/business_search
 //  current rate limit is 25000 per day
+
+//  can use categories endpoint to help with "personalizing" search results
+// https://www.yelp.com/developers/documentation/v3/all_category_list
+// OR use the term endpoint but not both because it will severely limit the results
 module.exports = {
 
     // Get data from Yelp and format it
@@ -30,6 +35,7 @@ module.exports = {
 
                 client.search({
                     term: term_in,
+                    //categories:'desserts',
                     //open_at: unix_time,
                     location: location_in,
                     limit: 50,
