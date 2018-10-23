@@ -62,22 +62,28 @@ module.exports = {
                         var address= '';
                         var yelpRating = 4.0;
                         var description = '';
+                        var numDollarSigns = 1;
 
                         switch (business.price) {
                             case '$':
                                 business.price = 10;
+                                numDollarSigns = 1;
                                 break;
                             case '$$':
                                 business.price = 30; //20 before
+                                numDollarSigns = 2;
                                 break;
                             case '$$$':
                                 business.price = 60; //46 before
+                                numDollarSigns = 3;
                                 break;
                             case '$$$$':
                                 business.price = 100; //65 before
+                                numDollarSigns = 4;
                                 break;
                             default:
                                 business.price = 30;
+                                numDollarSigns = 2;
                         }
 
                         // Collect url
@@ -181,6 +187,7 @@ module.exports = {
                             origin: 'yelp',
                             dist_within: search_radius_miles, // integer in miles
                             distance_from_input_location: distance_from_input_location,
+                            numDollarSigns: numDollarSigns,
                         }
                         businesses.push(item);
                     });
