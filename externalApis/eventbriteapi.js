@@ -33,7 +33,7 @@ const DURATION_BIAS = 0.0;
 // 114 - Tours? 
 // 199 - Training
 module.exports = {
-    getEventbriteData: function (term_query, latlon, city, date_in, search_radius_miles) {
+    getEventbriteData: function (term_query, latlon, city, date_in, search_radius_miles, eventType_in) {
         return new Promise(function (resolve, reject) {
             // ACCESS EVENTBRITE API
 
@@ -51,6 +51,7 @@ module.exports = {
                 search_radius_miles = 1;
             }
             var search_radius = search_radius_miles + 'mi'; //needs to be astring
+            var eventType = parseInt(eventType_in);
 
             var options = {
                 url: base_url + 'events/search',
@@ -59,7 +60,7 @@ module.exports = {
                 },
                 qs: {
                     // 'q': term_query,
-                    //'categories': '101', //comma delimited string of category IDs
+                    'categories': CONSTANTS.EB_EVENTTYPE_SEARCHKEYS[eventType], //comma delimited string of category IDs
                     'location.latitude': latitude,
                     'location.longitude': longitude,
                     'start_date.range_start': today,

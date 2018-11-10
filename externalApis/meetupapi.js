@@ -21,12 +21,13 @@ const MAX_DESCRIPTION_LENGTH = 1000;
 module.exports = {
     // ------------- Meetup API Stuff
     // Get  data from Meetup
-    getMeetupData: function (location_in, date_in, search_radius_miles) {
+    getMeetupData: function (location_in, date_in, search_radius_miles, eventType_in) {
         //Meetup
         return new Promise(function (resolve, reject) {
             try {
                 //Initialize
                 var latLongArray = misc.processLocationString(location_in);
+                var eventType = parseInt(eventType_in);
                 var meetupEvents = {
                     Event1: [],
                     Event2: [],
@@ -53,7 +54,7 @@ module.exports = {
                     lon: latLongArray[1],
                     radius: search_radius,
                     order: 'time',
-                    //text: 'outdoor', //empty returns all events or you can specify a string (ie art, park, sport)
+                    text: CONSTANTS.MU_EVENTTYPE_SEARCHKEYS[eventType], //empty returns all events or you can specify a string (ie art, park, sport)
                     end_date_range: dateEnd,
                     start_date_range: today, // default start date and time is the current date and time
                     page: 100,

@@ -44,7 +44,7 @@ const EVENT4_TIME = 2400;
 // can only search for one typ at a time
 
 module.exports = {
-    getGooglePlacesData: function (location_in, search_radius_miles) {
+    getGooglePlacesData: function (location_in, search_radius_miles, eventType_in) {
         return new Promise(function (resolve, reject) {
             try {
                 //console.log(location_in)
@@ -57,9 +57,11 @@ module.exports = {
 
                 var search_radius = search_radius_miles; 
 
+                var eventType = parseInt(eventType_in);
+
                 var parameters = {
                     location: location_in,
-                    //type: "amusement_park",
+                    type: CONSTANTS.GP_EVENTTYPE_SEARCHKEYS[eventType],
                     radius: search_radius*CONSTANTS.MILES_TO_METERS,
                 };
                 googlePlaces.placeSearch(parameters, function (error, response) {

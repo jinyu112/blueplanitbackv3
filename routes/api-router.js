@@ -116,7 +116,7 @@ apiRouter.post('/', (req, res, next) => {
 
             if (doMeetupCalls) {
                 // Fulfilled promise returned from getMeetupData is an array of object arrays
-                return meetupApi.getMeetupData(req.body.latlon, date, req.body.search_radius_miles);
+                return meetupApi.getMeetupData(req.body.latlon, date, req.body.search_radius_miles, req.body.eventType);
             }
             else {
                 var meetupEvents = EMPTY_EVENT_ARRAY;
@@ -184,7 +184,7 @@ apiRouter.post('/', (req, res, next) => {
             }
 
             if (doEventbriteCalls) {          
-                return eventbriteApi.getEventbriteData(req.body.term, req.body.latlon, req.body.city, date, req.body.search_radius_miles);              
+                return eventbriteApi.getEventbriteData(req.body.term, req.body.latlon, req.body.city, date, req.body.search_radius_miles, req.body.eventType);              
             }
             else {
                 var eventbriteEvents = EMPTY_EVENT_ARRAY;
@@ -206,7 +206,7 @@ apiRouter.post('/', (req, res, next) => {
                 eventbriteGlobal = eventbriteEvents;            
             }
             if (doGooglePlacesCalls) {
-                return googlePlacesApi.getGooglePlacesData(req.body.latlon,req.body.search_radius_miles);
+                return googlePlacesApi.getGooglePlacesData(req.body.latlon,req.body.search_radius_miles, req.body.eventType);
             }
             else {
                 var googlePlacesEvents = EMPTY_EVENT_ARRAY;

@@ -22,4 +22,25 @@ module.exports = {
         other: 0,
       },
       NOCOST_EVENT_COST: 20, //set a $20 cost for events that don't have costs associated with them
+      EB_EVENTTYPE_SEARCHKEYS: [
+        '',
+        '103,104,106,110', //party,networking/premier,fashion show,dance
+        '108', //sports
+        '109,114', // tourism
+        '113,105', // interest groups,talks/poetry
+    ],
+    MU_EVENTTYPE_SEARCHKEYS: [
+        '',
+        'night life', //party,networking/premier,fashion show,dance
+        'outdoor', //sports
+        'tourism', // tourism
+        'art', // art
+    ],
+    GP_EVENTTYPE_SEARCHKEYS: [
+        'park',
+        'bar', 
+        'park', 
+        'amusement_park', 
+        'museum', 
+    ],
 }
