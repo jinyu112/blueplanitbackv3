@@ -50,19 +50,19 @@ apiRouter.post('/', (req, res, next) => {
     const DINNER = "Dinner";
 
     // Empty arrays in case some error occurred during api call
-    const EMPTY_EVENT_ARRAY ={
+    const EMPTY_EVENT_ARRAY = {
         Event1: [{}],
         Event2: [{}],
         Event3: [{}],
         Event4: [{}]
-    }; 
+    };
 
     // Promise Chain of API calls
 
     // Start with breakfast restaurants
     yelpApi.getYelpData(BREAKFAST, req.body.latlon, client, date, string_date, BREAKFAST_HOUR, req.body.search_radius_miles).then(
         function (yelpBreakfastItems) {
-            if (yelpBreakfastItems===false) { // some error occured during api call
+            if (yelpBreakfastItems === false) { // some error occured during api call
                 yelpBreakfastItemsGlobal = [CONSTANTS.NONE_ITEM]; //array because slice is used in userinput.js
             }
             else {
@@ -86,7 +86,7 @@ apiRouter.post('/', (req, res, next) => {
             console.log(e)
         }) // -------------------------- End yelp lunch restaurants search
         .then(function (yelpLunchItems) {
-            if (yelpLunchItems===false || yelpLunchItems===undefined || yelpLunchItems===null) { // some error occured during api call
+            if (yelpLunchItems === false || yelpLunchItems === undefined || yelpLunchItems === null) { // some error occured during api call
                 yelpLunchItemsGlobal = [CONSTANTS.NONE_ITEM]; //array because slice is used in userinput.js
             }
             else {
@@ -107,7 +107,7 @@ apiRouter.post('/', (req, res, next) => {
             console.log(e)
         }) // -------------------------- End yelp dinner restaurants search
         .then(function (yelpDinnerItems) {
-            if (yelpDinnerItems===false || yelpDinnerItems===undefined || yelpDinnerItems===null) { // some error occured during api call
+            if (yelpDinnerItems === false || yelpDinnerItems === undefined || yelpDinnerItems === null) { // some error occured during api call
                 yelpDinnerItemsGlobal = [CONSTANTS.NONE_ITEM]; //array because slice is used in userinput.js
             }
             else {
@@ -123,13 +123,13 @@ apiRouter.post('/', (req, res, next) => {
                 return meetupEvents;
             }
 
-        }, function (err) {            
+        }, function (err) {
             return err;
         }).catch(function (e) {
             console.log(e)
         }) // -------------------------- End meetup event search
         .then(function (meetupEvents) {
-            if (meetupEvents===false || meetupEvents===undefined || meetupEvents===null) { // some error occured during api call
+            if (meetupEvents === false || meetupEvents === undefined || meetupEvents === null) { // some error occured during api call
                 meetupItemsGlobal = EMPTY_EVENT_ARRAY;
             }
             else {
@@ -138,7 +138,7 @@ apiRouter.post('/', (req, res, next) => {
 
             if (doSeatgeekCalls) {
                 // Fulfilled promise returned from getSeatGeekData is an array of object arrays
-                return seatgeekApi.getSeatGeekData(req.body.city, date, req.body.search_radius_miles,req.body.latlon);
+                return seatgeekApi.getSeatGeekData(req.body.city, date, req.body.search_radius_miles, req.body.latlon);
             }
             else {
                 var seatgeekEvents = EMPTY_EVENT_ARRAY;
@@ -153,7 +153,7 @@ apiRouter.post('/', (req, res, next) => {
             console.log(e)
         })  // -------------------------- End seatgeek event search
         .then(function (seatgeekEvents) {
-            if (seatgeekEvents===false) { // some error occured during api call
+            if (seatgeekEvents === false) { // some error occured during api call
                 seatgeekItemsGlobal = EMPTY_EVENT_ARRAY;
             }
             else {
@@ -176,15 +176,15 @@ apiRouter.post('/', (req, res, next) => {
             console.log(e)
         })  // -------------------------- End yelp event search
         .then(function (yelpEvents) {
-            if (yelpEvents===false) { // some error occured during api call
+            if (yelpEvents === false) { // some error occured during api call
                 yelpEventsGlobal = EMPTY_EVENT_ARRAY;
             }
             else {
                 yelpEventsGlobal = yelpEvents;
             }
 
-            if (doEventbriteCalls) {          
-                return eventbriteApi.getEventbriteData(req.body.term, req.body.latlon, req.body.city, date, req.body.search_radius_miles, req.body.eventType);              
+            if (doEventbriteCalls) {
+                return eventbriteApi.getEventbriteData(req.body.term, req.body.latlon, req.body.city, date, req.body.search_radius_miles, req.body.eventType);
             }
             else {
                 var eventbriteEvents = EMPTY_EVENT_ARRAY;
@@ -199,14 +199,14 @@ apiRouter.post('/', (req, res, next) => {
             console.log(e)
         })  // -------------------------- End eventbrite event search
         .then(function (eventbriteEvents) {
-            if (eventbriteEvents===false) { // some error occured during api call
-                evenbriteGlobal = EMPTY_EVENT_ARRAY; 
+            if (eventbriteEvents === false) { // some error occured during api call
+                evenbriteGlobal = EMPTY_EVENT_ARRAY;
             }
             else { // api call was fine
-                eventbriteGlobal = eventbriteEvents;            
+                eventbriteGlobal = eventbriteEvents;
             }
             if (doGooglePlacesCalls) {
-                return googlePlacesApi.getGooglePlacesData(req.body.latlon,req.body.search_radius_miles, req.body.eventType);
+                return googlePlacesApi.getGooglePlacesData(req.body.latlon, req.body.search_radius_miles, req.body.eventType);
             }
             else {
                 var googlePlacesEvents = EMPTY_EVENT_ARRAY;
@@ -214,10 +214,10 @@ apiRouter.post('/', (req, res, next) => {
             }
 
         }, function (err) {
-            evenbriteGlobal = EMPTY_EVENT_ARRAY; 
+            evenbriteGlobal = EMPTY_EVENT_ARRAY;
             return err;
         }).catch(function (e) {
-            evenbriteGlobal = EMPTY_EVENT_ARRAY; 
+            evenbriteGlobal = EMPTY_EVENT_ARRAY;
             console.log(e)
         })  // -------------------------- End eventbrite event search
         .then(function (googlePlaces) {
@@ -282,59 +282,101 @@ function getYelpDataLength(term_in, latlon_in) {
 function countNumOfDataPoints(apiData_in) {
     // console.log(apiData_in)
     // Determine how many data points there are
-    var numMeetupEvents_out = apiData_in.meetupItemsGlobal.Event1.length +
-      apiData_in.meetupItemsGlobal.Event2.length +
-      apiData_in.meetupItemsGlobal.Event3.length +
-      apiData_in.meetupItemsGlobal.Event4.length;
-  
-    var numYelpEvents_out = apiData_in.yelpEventsGlobal.Event1.length +
-      apiData_in.yelpEventsGlobal.Event2.length +
-      apiData_in.yelpEventsGlobal.Event3.length +
-      apiData_in.yelpEventsGlobal.Event4.length;
-  
-    var numEventbriteEvents_out = apiData_in.eventbriteGlobal.Event1.length +
-      apiData_in.eventbriteGlobal.Event2.length +
-      apiData_in.eventbriteGlobal.Event3.length +
-      apiData_in.eventbriteGlobal.Event4.length;
-  
-    var numSeatgeekEvents_out = apiData_in.seatgeekItemsGlobal.Event1.length +
-      apiData_in.seatgeekItemsGlobal.Event2.length +
-      apiData_in.seatgeekItemsGlobal.Event3.length +
-      apiData_in.seatgeekItemsGlobal.Event4.length;
-  
-    var numGooglePlaces_out = apiData_in.googlePlacesGlobal.Event1.length +
-      apiData_in.googlePlacesGlobal.Event2.length +
-      apiData_in.googlePlacesGlobal.Event3.length +
-      apiData_in.googlePlacesGlobal.Event4.length;
-  
-    var numYelpBreakfastPlaces_out = apiData_in.yelpBreakfastItemsGlobal.length;
-    var numYelpLunchPlaces_out = apiData_in.yelpLunchItemsGlobal.length;
-    var numYelpDinnerPlaces_out = apiData_in.yelpDinnerItemsGlobal.length;
-  
+    var numMeetupEvents_out = 0;
+    if (!misc.isEmpty(apiData_in.meetupItemsGlobal) &&
+        apiData_in.meetupItemsGlobal !== null &&
+        apiData_in.meetupItemsGlobal !== undefined) {
+        numMeetupEvents_out = apiData_in.meetupItemsGlobal.Event1.length +
+            apiData_in.meetupItemsGlobal.Event2.length +
+            apiData_in.meetupItemsGlobal.Event3.length +
+            apiData_in.meetupItemsGlobal.Event4.length;
+    }
+
+    var numYelpEvents_out = 0;
+    if (!misc.isEmpty(apiData_in.yelpEventsGlobal) &&
+        apiData_in.yelpEventsGlobal !== null &&
+        apiData_in.yelpEventsGlobal !== undefined) {
+        numYelpEvents_out = apiData_in.yelpEventsGlobal.Event1.length +
+            apiData_in.yelpEventsGlobal.Event2.length +
+            apiData_in.yelpEventsGlobal.Event3.length +
+            apiData_in.yelpEventsGlobal.Event4.length;
+    }
+
+    var numEventbriteEvents_out = 0;
+    if (!misc.isEmpty(apiData_in.evenbriteGlobal) &&
+        apiData_in.evenbriteGlobal !== null &&
+        apiData_in.evenbriteGlobal !== undefined) {
+        numEventbriteEvents_out = apiData_in.eventbriteGlobal.Event1.length +
+            apiData_in.eventbriteGlobal.Event2.length +
+            apiData_in.eventbriteGlobal.Event3.length +
+            apiData_in.eventbriteGlobal.Event4.length;
+    }
+
+    var numSeatgeekEvents_out = 0;
+    if (!misc.isEmpty(apiData_in.seatgeekItemsGlobal) &&
+        apiData_in.seatgeekItemsGlobal !== null &&
+        apiData_in.seatgeekItemsGlobal !== undefined) {
+        numSeatgeekEvents_out = apiData_in.seatgeekItemsGlobal.Event1.length +
+            apiData_in.seatgeekItemsGlobal.Event2.length +
+            apiData_in.seatgeekItemsGlobal.Event3.length +
+            apiData_in.seatgeekItemsGlobal.Event4.length;
+    }
+
+    var numGooglePlaces_out = 0;
+    if (!misc.isEmpty(apiData_in.googlePlacesGlobal) &&
+        apiData_in.googlePlacesGlobal !== null &&
+        apiData_in.googlePlacesGlobal !== undefined) {
+        numGooglePlaces_out = apiData_in.googlePlacesGlobal.Event1.length +
+            apiData_in.googlePlacesGlobal.Event2.length +
+            apiData_in.googlePlacesGlobal.Event3.length +
+            apiData_in.googlePlacesGlobal.Event4.length;
+    }
+
+    var numYelpBreakfastPlaces_out = 0;
+    if (!misc.isEmpty(apiData_in.yelpBreakfastItemsGlobal) &&
+        apiData_in.yelpBreakfastItemsGlobal !== null &&
+        apiData_in.yelpBreakfastItemsGlobal !== undefined) {
+        numYelpBreakfastPlaces_out = apiData_in.yelpBreakfastItemsGlobal.length;
+    }
+
+    var numYelpLunchPlaces_out = 0;
+    if (!misc.isEmpty(apiData_in.yelpLunchItemsGlobal) &&
+        apiData_in.yelpLunchItemsGlobal !== null &&
+        apiData_in.yelpLunchItemsGlobal !== undefined) {
+        numYelpLunchPlaces_out = apiData_in.yelpLunchItemsGlobal.length;
+    }
+
+    var numYelpDinnerPlaces_out = 0;
+    if (!misc.isEmpty(apiData_in.yelpDinnerItemsGlobal) &&
+        apiData_in.yelpDinnerItemsGlobal !== null &&
+        apiData_in.yelpDinnerItemsGlobal !== undefined) {
+        numYelpDinnerPlaces_out = apiData_in.yelpDinnerItemsGlobal.length;
+    }
+
     var includeYelpEvents = false;
-    var numOfEvents_out = numMeetupEvents_out + 
-                      numEventbriteEvents_out +
-                      numSeatgeekEvents_out +
-                      numGooglePlaces_out;                    
+    var numOfEvents_out = numMeetupEvents_out +
+        numEventbriteEvents_out +
+        numSeatgeekEvents_out +
+        numGooglePlaces_out;
     if (includeYelpEvents) {
-      numOfEvents_out = numOfEvents_out + numYelpEvents_out;
+        numOfEvents_out = numOfEvents_out + numYelpEvents_out;
     }
-  
+
     var numOfFoodPlaces_out = numYelpBreakfastPlaces_out +
-                              numYelpLunchPlaces_out +
-                              numYelpDinnerPlaces_out;
+        numYelpLunchPlaces_out +
+        numYelpDinnerPlaces_out;
     return {
-      numMeetupEvents: numMeetupEvents_out,
-      numYelpEvents: numYelpEvents_out,
-      numEventbriteEvents: numEventbriteEvents_out,
-      numSeatgeekEvents: numSeatgeekEvents_out,
-      numGooglePlaces: numGooglePlaces_out,
-      numYelpBreakfastPlaces: numYelpBreakfastPlaces_out,
-      numYelpLunchPlaces: numYelpLunchPlaces_out,
-      numYelpDinnerPlaces: numYelpDinnerPlaces_out,
-      numOfEvents: numOfEvents_out,
-      numOfFoodPlaces: numOfFoodPlaces_out,
+        numMeetupEvents: numMeetupEvents_out,
+        numYelpEvents: numYelpEvents_out,
+        numEventbriteEvents: numEventbriteEvents_out,
+        numSeatgeekEvents: numSeatgeekEvents_out,
+        numGooglePlaces: numGooglePlaces_out,
+        numYelpBreakfastPlaces: numYelpBreakfastPlaces_out,
+        numYelpLunchPlaces: numYelpLunchPlaces_out,
+        numYelpDinnerPlaces: numYelpDinnerPlaces_out,
+        numOfEvents: numOfEvents_out,
+        numOfFoodPlaces: numOfFoodPlaces_out,
     }
-  }
+}
 
 module.exports = apiRouter;
