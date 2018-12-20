@@ -80,7 +80,7 @@ module.exports = {
                             var phone='';
                             var address='';
                             var rsvpCnt = 0;
-                            var waitlistCnt = 0;
+                            var waitlistCnt = 0;                            
 
                             // Get the event time
                             var time = events.events[i].local_time;
@@ -179,28 +179,17 @@ module.exports = {
                             if (events.events[i].local_date) {
                                 date = events.events[i].local_date;
                             }
-
+                            
                             // Collect location information
+                            // check that the returned event is within the search radius
+                            var insideSearchRadius = true;   
+                            var distance_from_input_location = 0.0;                         
                             if (events.events[i].venue) {
-
                                 if (events.events[i].venue.lat) {
-                                    // eventLocation = events.events[i].venue.lat + "," + events.events[i].venue.lon;
                                     eventLocation = {
                                         lat: events.events[i].venue.lat,
                                         lng: events.events[i].venue.lon
                                     }
-
-                                    var lat_input = parseFloat(latLongArray[0]);
-                                    var long_input = parseFloat(latLongArray[1]);
-                                    distance_from_input_location = misc.getDistanceFromLatLonInMi(lat_input,long_input,
-                                        eventLocation.lat,eventLocation.lng); //output is in mi
-                                    // do some limit checks
-                                    if (distance_from_input_location >= parseFloat(search_radius)) {
-                                        distance_from_input_location = parseFloat(search_radius);
-                                    }
-                                    else if (distance_from_input_location < 0) {
-                                        distance_from_input_location = 0;
-                                    } 
                                 } else if (events.events[i].venue.address_1 && events.events[i].venue.city &&
                                 events.events[i].venue.state && events.events[i].venue.zip) {
                                     eventLocation = events.events[i].venue.address_1 + "," +
@@ -213,27 +202,28 @@ module.exports = {
                                 rating =rating + RATING_INCR;
                             }
                             else if (events.events[i].group) {
-                                if (events.events[i].group.lat ) {
-                                    // eventLocation = events.events[i].group.lat + "," + events.events[i].group.lon;
+                                if (events.events[i].group.lat ) {                                    
                                     eventLocation = {
                                         lat: events.events[i].group.lat,
                                         lng: events.events[i].group.lon
                                     }
-                                    var lat_input = parseFloat(latLongArray[0]);
-                                    var long_input = parseFloat(latLongArray[1]);
-                                    distance_from_input_location = misc.getDistanceFromLatLonInMi(lat_input,long_input,
-                                        eventLocation.lat,eventLocation.lng); //output is in mi
-                                    // do some limit checks
-                                    if (distance_from_input_location >= parseFloat(search_radius)) {
-                                        distance_from_input_location = parseFloat(search_radius);
-                                    }
-                                    else if (distance_from_input_location < 0) {
-                                        distance_from_input_location = 0;
-                                    } 
-                                    rating = rating + RATING_INCR/2.0;
+                                    rating = rating + RATING_INCR / 2.0;
                                 }
                             }
                             else distance_from_input_location = 0;
+
+                            var lat_input = parseFloat(latLongArray[0]);
+                            var long_input = parseFloat(latLongArray[1]);
+                            distance_from_input_location = misc.getDistanceFromLatLonInMi(lat_input, long_input,
+                                eventLocation.lat, eventLocation.lng); //output is in mi
+                            // do some limit checks
+                            if (distance_from_input_location >= parseFloat(search_radius)) {
+                                insideSearchRadius = false;
+                            }
+                            else if (distance_from_input_location < 0) {
+                                distance_from_input_location = 0.0;
+                            }
+
 
                             if (events.events[i].description && !misc.isEmpty(events.events[i].description)) {
                                 logoUrl = misc.findImgInDesc(events.events[i].description);
@@ -259,7 +249,7 @@ module.exports = {
                                 distance_from_input_location: distance_from_input_location,
                             }
 
-                            if (events.events[i].local_time || events.events[i].time) {
+                            if ((events.events[i].local_time || events.events[i].time) && insideSearchRadius) {
                                 // Categorize the events by time
                                 if (timeFloat <= EVENT1_TIME) {
                                     meetupEvents.Event1.push(item);
