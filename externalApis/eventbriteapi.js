@@ -207,7 +207,7 @@ module.exports = {
                                 distance_from_input_location: 0,
                             };
 
-                            if (event.start) {
+                            if (event.start && parseFloat(time) >= 400 ) {
                                 if (event.start.local) {
                                     // Categorize the events by time and push to seatgeekEvents
                                     if (timeFloat <= EVENT1_TIME) {
