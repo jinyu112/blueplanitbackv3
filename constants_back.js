@@ -43,4 +43,10 @@ module.exports = {
         'amusement_park', 
         'museum', 
     ],
+    BREAKFAST_HOUR:  9, // hours from 12:00am
+    LUNCH_HOUR: 13,  // 1 pm
+    DINNER_HOUR: 18, // 6 pm
+    BREAKFAST: "Breakfast",
+    LUNCH: "Lunch",
+    DINNER: "Dinner",
 }

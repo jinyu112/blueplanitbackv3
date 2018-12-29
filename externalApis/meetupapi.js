@@ -247,23 +247,28 @@ module.exports = {
                                 origin: 'meetup',
                                 dist_within: search_radius, // integer in miles
                                 distance_from_input_location: distance_from_input_location,
+                                original_itin_pos: 0,
                             }
 
                             if ((events.events[i].local_time || events.events[i].time) && insideSearchRadius) {
                                 // Categorize the events by time
                                 if (timeFloat <= EVENT1_TIME) {
+                                    item.original_itin_pos = 0;
                                     meetupEvents.Event1.push(item);
                                     eventCnt++;
                                 }
                                 else if (timeFloat <= EVENT2_TIME) {
+                                    item.original_itin_pos = 2;
                                     meetupEvents.Event2.push(item);
                                     eventCnt++;
                                 }
                                 else if (timeFloat <= EVENT3_TIME) {
+                                    item.original_itin_pos = 4;
                                     meetupEvents.Event3.push(item);
                                     eventCnt++;
                                 }
                                 else if (timeFloat < EVENT4_TIME) {
+                                    item.original_itin_pos = 6;
                                     meetupEvents.Event4.push(item);
                                     eventCnt++;
                                 }

@@ -180,23 +180,28 @@ module.exports = {
                                 origin: 'places',
                                 dist_within: search_radius, // integer
                                 distance_from_input_location: distance_from_input_location,
+                                original_itin_pos: 0,
                             }
 
                             if (time && rating > 4.0) {
                                 // Categorize the events by time
                                 if (timeFloat <= EVENT1_TIME) {
+                                    item.original_itin_pos = 0;
                                     googlePlacesEvent.Event1.push(item);
                                     placeCnt++;
                                 }
                                 else if (timeFloat <= EVENT2_TIME) {
+                                    item.original_itin_pos = 2;
                                     googlePlacesEvent.Event2.push(item);
                                     placeCnt++;
                                 }
                                 else if (timeFloat <= EVENT3_TIME) {
+                                    item.original_itin_pos = 4;
                                     googlePlacesEvent.Event3.push(item);
                                     placeCnt++;
                                 }
                                 else if (timeFloat < EVENT4_TIME) {
+                                    item.original_itin_pos = 6;
                                     googlePlacesEvent.Event4.push(item);
                                     placeCnt++;
                                 }

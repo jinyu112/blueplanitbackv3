@@ -42,12 +42,12 @@ apiRouter.post('/', (req, res, next) => {
     var string_date = req.body.string_date
 
     // Yelp API Inputs
-    const BREAKFAST_HOUR = 9; // hours from 12:00am
-    const LUNCH_HOUR = 13;  // 1 pm
-    const DINNER_HOUR = 18; // 6 pm
-    const BREAKFAST = "Breakfast";
-    const LUNCH = "Lunch";
-    const DINNER = "Dinner";
+    var BREAKFAST_HOUR = CONSTANTS.BREAKFAST_HOUR; // hours from 12:00am
+    var LUNCH_HOUR = CONSTANTS.LUNCH_HOUR;  // 1 pm
+    var DINNER_HOUR = CONSTANTS.DINNER_HOUR; // 6 pm
+    var BREAKFAST = CONSTANTS.BREAKFAST;
+    var LUNCH = CONSTANTS.LUNCH;
+    var DINNER = CONSTANTS.DINNER;
 
     // Empty arrays in case some error occurred during api call
     const EMPTY_EVENT_ARRAY = {

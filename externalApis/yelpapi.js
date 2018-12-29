@@ -168,6 +168,17 @@ module.exports = {
 
                         }
 
+                        var iOriginalPos = 0;
+                        if (term_in === CONSTANTS.BREAKFAST) {
+                            iOriginalPos = 1;
+                        }
+                        else if (term_in === CONSTANTS.LUNCH) {
+                            iOriginalPos = 3;
+                        }
+                        else {
+                            iOriginalPos = 5;
+                        }
+
                         var item = {
                             name: business.name,
                             cost: business.price,
@@ -188,6 +199,7 @@ module.exports = {
                             dist_within: search_radius_miles, // integer in miles
                             distance_from_input_location: distance_from_input_location,
                             numDollarSigns: numDollarSigns,
+                            original_itin_pos: iOriginalPos,
                         }
                         businesses.push(item);
                     });

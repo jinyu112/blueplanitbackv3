@@ -205,24 +205,29 @@ module.exports = {
                                 origin: 'eventbrite',
                                 dist_within: search_radius_miles, // integer
                                 distance_from_input_location: 0,
+                                original_itin_pos: 0,
                             };
 
                             if (event.start && parseFloat(time) >= 400 ) {
                                 if (event.start.local) {
                                     // Categorize the events by time and push to seatgeekEvents
                                     if (timeFloat <= EVENT1_TIME) {
+                                        item.original_itin_pos = 0;
                                         eventbriteEvents.Event1.push(item);
                                         eventCnt++;
                                     }
                                     else if (timeFloat <= EVENT2_TIME) {
+                                        item.original_itin_pos = 2;
                                         eventbriteEvents.Event2.push(item);
                                         eventCnt++;
                                     }
                                     else if (timeFloat <= EVENT3_TIME) {
+                                        item.original_itin_pos = 4;
                                         eventbriteEvents.Event3.push(item);
                                         eventCnt++;
                                     }
                                     else if (timeFloat < EVENT4_TIME) {
+                                        item.original_itin_pos = 6;
                                         eventbriteEvents.Event4.push(item);
                                         eventCnt++;
                                     }
