@@ -173,18 +173,6 @@ module.exports = {
                             }
 
 
-                            // Collect location information
-                            if (event.venue_id) {
-                                // eventLocation = event.venue_id;
-                                eventLocation = {
-                                    lat: latitude,
-                                    lng: longitude
-                                };
-                                // distance = getDistanceFromLatLonInMi(latitude,longitude,)
-                                rating = rating + RATING_INCR;
-                            }
-
-
                             rating = misc.round2NearestHundredth(rating);
                             var item = {
                                 name: name,
