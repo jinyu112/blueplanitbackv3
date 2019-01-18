@@ -65,7 +65,9 @@ emailRouter.post('/', (req, res, next) => {
             if(err) {
                 reject('Unable to send email. Please try again.');
             } else {
-                resolve(message);
+                if(message) {
+                    resolve('Email Sent!');
+                }
             }
         });
     });
