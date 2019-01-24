@@ -20,7 +20,7 @@ emailRouter.post('/', (req, res, next) => {
        host:	"smtp.gmail.com",
        ssl:		true
     });
-console.log(req.body.message);
+
     var emailTemplate;
     var results = req.body.message;
     emailTemplate =  '<html style="margin: 0; padding: 0;">';
@@ -41,7 +41,7 @@ console.log(req.body.message);
             address = `<p style="margin: 0;font-size:12px;color:#525252;"><i class="fas fa-map-marker-alt"></i> ${results[i].address}</p>`;
         }
         if(results[i].phone) {
-            phone = `<p style="margin:0;font-size:12px;color:#525252;"><i class="fas fa-map-marker-alt"></i> ${results[i].phone}</p>`;
+            phone = `<p style="margin:0;font-size:12px;color:#525252;"><i class="fas fa-phone"></i> ${results[i].phone}</p>`;
         }
         emailTemplate += `<tr style="padding: 2em 0; ">
             <td style="text-align: center; padding: 2em 0; border-bottom: 1px solid #f1f1f1; min-width: 150px; margin:auto"><strong>${ results[i].time == 'Food' ? results[i].time : MISC.convertMilTime(results[i].time) }</strong></td>
