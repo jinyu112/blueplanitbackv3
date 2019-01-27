@@ -24,10 +24,10 @@ apiRouter.post('/', (req, res, next) => {
     var doYelpLunchCalls = true;
     var doYelpDinnerCalls = true;
     var doYelpEventCalls = false;
-    var doMeetupCalls = true;
-    var doEventbriteCalls = true;
+    var doMeetupCalls = false;
+    var doEventbriteCalls = false;
     var doSeatgeekCalls = true;
-    var doGooglePlacesCalls = true;
+    var doGooglePlacesCalls = false;
 
     // Variables for returned data
     var yelpBreakfastItemsGlobal = [CONSTANTS.NONE_ITEM];
@@ -51,10 +51,6 @@ apiRouter.post('/', (req, res, next) => {
 
     // Empty arrays in case some error occurred during api call
     const EMPTY_EVENT_ARRAY = {
-        Event1: [{}],
-        Event2: [{}],
-        Event3: [{}],
-        Event4: [{}]
     };
 
     // Promise Chain of API calls
@@ -316,10 +312,11 @@ function countNumOfDataPoints(apiData_in) {
     if (!misc.isEmpty(apiData_in.seatgeekItemsGlobal) &&
         apiData_in.seatgeekItemsGlobal !== null &&
         apiData_in.seatgeekItemsGlobal !== undefined) {
-        numSeatgeekEvents_out = apiData_in.seatgeekItemsGlobal.Event1.length +
-            apiData_in.seatgeekItemsGlobal.Event2.length +
-            apiData_in.seatgeekItemsGlobal.Event3.length +
-            apiData_in.seatgeekItemsGlobal.Event4.length;
+        // numSeatgeekEvents_out = apiData_in.seatgeekItemsGlobal.Event1.length +
+        //     apiData_in.seatgeekItemsGlobal.Event2.length +
+        //     apiData_in.seatgeekItemsGlobal.Event3.length +
+        //     apiData_in.seatgeekItemsGlobal.Event4.length;
+        numSeatgeekEvents_out = apiData_in.seatgeekItemsGlobal.length;         
     }
 
     var numGooglePlaces_out = 0;

@@ -25,12 +25,14 @@ module.exports = {
                 var seatgeekFee;
                 var latLongArray = MISC.processLocationString(latlon_in);
                 // Initialize the object that will hold the seatgeek event data categorized by time
-                var seatgeekEvents = {
-                    Event1: [],
-                    Event2: [],
-                    Event3: [],
-                    Event4: []
-                };
+                // var seatgeekEvents = {
+                    // Event1: [],
+                    // Event2: [],
+                    // Event3: [],
+                    // Event4: []
+                // };
+
+                var seatgeekEvents=[];
 
                 // Determine the date to query the events
                 var dateEnd = MISC.getDate(date_in, 0); // returns a string with a date in the format:
@@ -226,27 +228,30 @@ module.exports = {
                                     }
 
                                     if (events.events[i].datetime_local) {
-                                        // Categorize the events by time and push to seatgeekEvents
-                                        if (timeFloat <=EVENT1_TIME) {
-                                            item.original_itin_pos = 0;
-                                            seatgeekEvents.Event1.push(item);
-                                            eventCnt++;
-                                        }
-                                        else if (timeFloat <= EVENT2_TIME) {
-                                            item.original_itin_pos = 2;
-                                            seatgeekEvents.Event2.push(item);
-                                            eventCnt++;
-                                        }
-                                        else if (timeFloat <= EVENT3_TIME) {
-                                            item.original_itin_pos = 4;
-                                            seatgeekEvents.Event3.push(item);
-                                            eventCnt++;
-                                        }
-                                        else if (timeFloat < EVENT4_TIME) {
-                                            item.original_itin_pos = 6;
-                                            seatgeekEvents.Event4.push(item);
-                                            eventCnt++;
-                                        }
+                                        item.original_itin_pos = 0;
+                                        seatgeekEvents.push(item);
+                                        eventCnt++;
+                                        // // Categorize the events by time and push to seatgeekEvents
+                                        // if (timeFloat <=EVENT1_TIME) {
+                                        //     item.original_itin_pos = 0;
+                                        //     seatgeekEvents.Event1.push(item);
+                                        //     eventCnt++;
+                                        // }
+                                        // else if (timeFloat <= EVENT2_TIME) {
+                                        //     item.original_itin_pos = 2;
+                                        //     seatgeekEvents.Event2.push(item);
+                                        //     eventCnt++;
+                                        // }
+                                        // else if (timeFloat <= EVENT3_TIME) {
+                                        //     item.original_itin_pos = 4;
+                                        //     seatgeekEvents.Event3.push(item);
+                                        //     eventCnt++;
+                                        // }
+                                        // else if (timeFloat < EVENT4_TIME) {
+                                        //     item.original_itin_pos = 6;
+                                        //     seatgeekEvents.Event4.push(item);
+                                        //     eventCnt++;
+                                        // }
                                     }
                                 }
                             }
